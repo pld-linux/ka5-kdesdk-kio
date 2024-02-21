@@ -1,27 +1,27 @@
 #
 # Conditional build:
 %bcond_with	tests		# build with tests
-%define		kdeappsver	23.08.4
+%define		kdeappsver	24.01.95
 %define		kframever	5.94.0
 %define		qtver		5.15.2
 %define		kaname		kdesdk-kio
 Summary:	kdesdk kios
 Name:		ka5-%{kaname}
-Version:	23.08.4
-Release:	1
+Version:	24.01.95
+Release:	0.1
 License:	GPL v2+/LGPL v2.1+
 Group:		X11/Libraries
-Source0:	https://download.kde.org/stable/release-service/%{kdeappsver}/src/%{kaname}-%{version}.tar.xz
-# Source0-md5:	6ba935b65aba96298af151e46c6b381c
+Source0:	https://download.kde.org/unstable/release-service/%{kdeappsver}/src/%{kaname}-%{version}.tar.xz
+# Source0-md5:	1f42bcc189115b3b03d4abb4bf6caae2
 URL:		http://www.kde.org/
-BuildRequires:	Qt5Core-devel >= %{qtver}
+BuildRequires:	Qt6Core-devel >= %{qtver}
 BuildRequires:	cmake >= 3.20
 BuildRequires:	gettext-devel
-BuildRequires:	kf5-extra-cmake-modules >= %{kframever}
-BuildRequires:	kf5-ki18n-devel >= %{kframever}
-BuildRequires:	kf5-kio-devel >= %{kframever}
+BuildRequires:	kf6-extra-cmake-modules >= %{kframever}
+BuildRequires:	kf6-ki18n-devel >= %{kframever}
+BuildRequires:	kf6-kio-devel >= %{kframever}
 BuildRequires:	ninja
-BuildRequires:	qt5-build >= %{qtver}
+BuildRequires:	qt6-build >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.164
 BuildRequires:	shared-mime-info
 BuildRequires:	tar >= 1:1.22
@@ -41,7 +41,8 @@ kio from kdesdk package.
 	-G Ninja \
 	%{!?with_tests:-DBUILD_TESTING=OFF} \
 	-DHTML_INSTALL_DIR=%{_kdedocdir} \
-	-DKDE_INSTALL_USE_QT_SYS_PATHS=ON
+	-DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+	-DQT_MAJOR_VERSION=6
 %ninja_build -C build
 
 %if %{with tests}
@@ -60,5 +61,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{kaname}.lang
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/qt5/plugins/kf5/kio/perldoc.so
-%{_datadir}/kio_perldoc
+%attr(755,root,root) %{_libdir}/qt6/plugins/kf6/kio/perldoc.so
+%dir %{_datadir}/kio_perldoc
+%attr(755,root,root) %{_datadir}/kio_perldoc/pod2html.pl
